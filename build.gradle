@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id("com.gradleup.shadow") version "8.3.8"
+    id("com.diffplug.spotless") version "7.2.1"
 }
 
 group = 'dev.pcvolkmer.onco'
@@ -31,7 +32,7 @@ configurations {
 }
 
 ext {
-    onkostarVersion = '2.14.1'
+    onkostarVersion = '2.14.2'
     springVersion = '4.3.8.RELEASE'
     slf4jVersion = '1.7.2'
     junitVersion = '5.13.3'
@@ -64,6 +65,7 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    dependsOn(tasks.spotlessCheck)
 }
 
 // Include dependencies in resulting JAR file
@@ -73,5 +75,13 @@ tasks.shadowJar {
         exclude("de/itc/onkostar/api/**")
         include(dependency("dev.pcvolkmer.onco:mv64e-onkostar-data"))
         include(dependency("dev.pcvolkmer.mv64e:mtb-dto"))
+    }
+}
+
+spotless {
+    java {
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
     }
 }
