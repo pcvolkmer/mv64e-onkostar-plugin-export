@@ -16,6 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -148,6 +149,10 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
         } catch (IllegalArgumentException e) {
             logger.error("Not a valid URI to export to: '{}'", exportUrl);
             throw new RuntimeException("Keine gültige Adresse für das externe System");
+        } catch (HttpClientErrorException e) {
+            logger.error("Cannot send data to remote system", e);
+            logger.error("Response: {}", e.getResponseBodyAsString());
+            throw new RuntimeException("Kann Daten nicht an das externe System senden");
         } catch (RestClientException e) {
             logger.error("Cannot send data to remote system", e);
             throw new RuntimeException("Kann Daten nicht an das externe System senden");
