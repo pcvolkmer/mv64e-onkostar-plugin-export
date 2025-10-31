@@ -1,5 +1,6 @@
 package dev.pcvolkmer.onco.dnpmexport;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import de.itc.onkostar.api.Disease;
 import de.itc.onkostar.api.IOnkostarApi;
 import de.itc.onkostar.api.Procedure;
@@ -7,6 +8,7 @@ import de.itc.onkostar.api.analysis.AnalyseTriggerEvent;
 import de.itc.onkostar.api.analysis.AnalyzerRequirement;
 import de.itc.onkostar.api.analysis.IProcedureAnalyzer;
 import de.itc.onkostar.api.analysis.OnkostarPluginType;
+import dev.pcvolkmer.mv64e.mtb.Converter;
 import dev.pcvolkmer.mv64e.mtb.Mtb;
 import dev.pcvolkmer.onco.datamapper.mapper.MtbDataMapper;
 import java.net.URI;
@@ -135,7 +137,15 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
             "Basic " + Base64.getEncoder().encodeToString(uri.getUserInfo().getBytes()));
       }
 
-      var entityReq = new HttpEntity<>(mtb, headers);
+      final var input = Converter.toJsonString(mtb);
+      final var jsonBuilder = new StringBuilder(input.length());
+      input
+          .codePoints()
+          .filter(Character::isValidCodePoint)
+          .filter(cp -> !Character.isSurrogate((char) cp))
+          .forEach(jsonBuilder::appendCodePoint);
+
+      var entityReq = new HttpEntity<>(jsonBuilder.toString(), headers);
 
       var r = restTemplate.postForEntity(uri, entityReq, String.class);
       if (!r.getStatusCode().is2xxSuccessful()) {
@@ -145,6 +155,9 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
     } catch (IllegalArgumentException e) {
       logger.error("Not a valid URI to export to: '{}'", exportUrl);
       throw new RuntimeException("Keine gültige Adresse für das externe System");
+    } catch (JsonProcessingException e) {
+      logger.error("Cannot send data to remote system", e);
+      throw new RuntimeException("Kann Daten nicht in JSON-String wandeln");
     } catch (HttpClientErrorException e) {
       logger.error("Cannot send data to remote system", e);
       logger.error("Response: {}", e.getResponseBodyAsString());
