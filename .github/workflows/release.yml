@@ -14,6 +14,12 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Fetch Onkostar-API
+        run: |
+          curl -L --user dnpm:${{ secrets.PACKAGE_TOKEN }} \
+            https://git.dnpm.dev/api/packages/Plugin-JF-Onkostar/generic/onkostar-api/2.14.2/onkostar-api-2.14.2.jar \
+            --output ${{ github.workspace }}/libs/onkostar-api-2.14.2.jar
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
