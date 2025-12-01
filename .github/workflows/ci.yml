@@ -50,7 +50,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
       # Build and publish maven
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew shadowJar
       # Only for release
       - name: Publish package
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
