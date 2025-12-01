@@ -1,11 +1,12 @@
 name: 'Run Tests'
 
 on:
+  pull_request:
+    branches: [ 'master' ]
   push:
     branches: [ 'master' ]
-    tags: [ '*' ]
-  pull_request:
-    branches: [ '*' ]
+  release:
+    types: [ 'created' ]
 
 permissions:
   contents: read
@@ -55,10 +56,5 @@ jobs:
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: PreRelease-Build_${{ github.run_number }}
-          prerelease: 'true'
-          draft: 'true'
-          make_latest: 'true'
-          generate_release_notes: 'true'
           files: |
             build/libs/*.jar
