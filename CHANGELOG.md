@@ -1,0 +1,14 @@
+# Changelog
+
+## [0.1.1](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.1.0...v0.1.1) (2025-12-01)
+
+
+### Features
+
+* implement http request ([628f011](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/628f01140473446f560bf02b5b149960f1690fa2))
+* remove illegal codepoints for utf-8 ([4a22bbe](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/4a22bbed48fe3d0570df84a574c60224be2a23fd))
+
+
+### Bug Fixes
+
+* use form field name instead of data cataloque field ([58cfef5](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/58cfef596c50a4c6a7acd2e9020c6abc19be58bd))
