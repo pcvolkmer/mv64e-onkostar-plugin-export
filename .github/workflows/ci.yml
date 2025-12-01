@@ -1,0 +1,64 @@
+name: 'Run Tests'
+
+on:
+  push:
+    branches: [ 'master' ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ '*' ]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Fetch Onkostar-API
+        run: |
+          curl -L --user dnpm:${{ secrets.PACKAGE_TOKEN }} \
+            https://git.dnpm.dev/api/packages/Plugin-JF-Onkostar/generic/onkostar-api/2.14.2/onkostar-api-2.14.2.jar \
+            --output ${{ github.workspace }}/libs/onkostar-api-2.14.2.jar
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Run tests
+        run: ./gradlew test
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs:
+      - tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Fetch Onkostar-API
+        run: |
+          curl -L --user dnpm:${{ secrets.PACKAGE_TOKEN }} \
+            https://git.dnpm.dev/api/packages/Plugin-JF-Onkostar/generic/onkostar-api/2.14.2/onkostar-api-2.14.2.jar \
+            --output ${{ github.workspace }}/libs/onkostar-api-2.14.2.jar
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      # Build and publish maven
+      - name: Build
+        run: ./gradlew build
+      # Only for release
+      - name: Publish package
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: PreRelease-Build_${{ github.run_number }}
+          prerelease: 'true'
+          draft: 'true'
+          make_latest: 'true'
+          generate_release_notes: 'true'
+          files: |
+            build/libs/*.jar
