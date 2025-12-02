@@ -1,6 +1,6 @@
-package dev.pcvolkmer.onco.dnpmexport;
+package dev.pcvolkmer.mv64e.dnpmexport;
 
-import dev.pcvolkmer.onco.datamapper.mapper.MtbDataMapper;
+import dev.pcvolkmer.mv64e.datamapper.mapper.MtbDataMapper;
 import java.nio.charset.StandardCharsets;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
