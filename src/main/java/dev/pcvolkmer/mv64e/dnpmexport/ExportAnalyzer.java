@@ -1,4 +1,4 @@
-package dev.pcvolkmer.onco.dnpmexport;
+package dev.pcvolkmer.mv64e.dnpmexport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.itc.onkostar.api.Disease;
@@ -8,9 +8,9 @@ import de.itc.onkostar.api.analysis.AnalyseTriggerEvent;
 import de.itc.onkostar.api.analysis.AnalyzerRequirement;
 import de.itc.onkostar.api.analysis.IProcedureAnalyzer;
 import de.itc.onkostar.api.analysis.OnkostarPluginType;
+import dev.pcvolkmer.mv64e.datamapper.mapper.MtbDataMapper;
 import dev.pcvolkmer.mv64e.mtb.Converter;
 import dev.pcvolkmer.mv64e.mtb.Mtb;
-import dev.pcvolkmer.onco.datamapper.mapper.MtbDataMapper;
 import java.net.URI;
 import java.util.Base64;
 import java.util.Set;
