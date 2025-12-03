@@ -11,6 +11,10 @@
         {
           "type": "generic",
           "path": "build.gradle"
+        },
+        {
+          "type": "generic",
+          "path": "src/main/java/dev/pcvolkmer/mv64e/dnpmexport/ExportAnalyzer.java"
         }
       ]
     }
