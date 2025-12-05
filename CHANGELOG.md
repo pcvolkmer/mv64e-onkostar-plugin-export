@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.1.2...v0.1.3) (2025-12-05)
+
+
+### Bug Fixes
+
+* shadow jar includes ([#12](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/issues/12)) ([ee8c643](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/ee8c643205ad79f000ff8a6d762ef44b41d9cccd))
+
 ## [0.1.2](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.1.1...v0.1.2) (2025-12-05)
 
 
