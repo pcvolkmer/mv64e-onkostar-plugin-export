@@ -65,7 +65,7 @@ tasks.shadowJar {
     minimize()
     dependencies {
         exclude("de/itc/onkostar/api/**")
-        include(dependency("dev.pcvolkmer.onco:mv64e-onkostar-data"))
+        include(dependency("dev.pcvolkmer.mv64e:mv64e-onkostar-data"))
         include(dependency("dev.pcvolkmer.mv64e:mtb-dto"))
     }
 }
