@@ -149,7 +149,7 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
 
       var r = restTemplate.postForEntity(uri, entityReq, String.class);
       if (!r.getStatusCode().is2xxSuccessful()) {
-        logger.warn("Error sending to remote system: {}", r.getBody());
+        logger.error("Error sending to remote system: {}", r.getBody());
         throw new RuntimeException("Kann Daten nicht an das externe System senden");
       }
     } catch (IllegalArgumentException e) {
