@@ -5,6 +5,11 @@ und anhand festgelegter Regeln die Notwendigkeit zum Export zu prüfen und diese
 
 Hierzu verwendet das Plugin das Projekt https://github.com/pcvolkmer/mv64e-onkostar-data.
 
+**Achtung!**
+
+Version >= 0.2.0 ist für die Verwendung mit DNPM:DIP (api-gateway) Version >= 1.2.3 bestimmt und verwendet Anpassungen
+im Geburts- und Sterbedatum im Format 'yyyy-MM' (ohne Tag).
+
 ## Einstellungen
 
 Zum Betrieb dieses Plugins ist die Angabe der URL der Zielanwendung erforderlich.
