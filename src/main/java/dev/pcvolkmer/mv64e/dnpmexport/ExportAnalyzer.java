@@ -56,7 +56,7 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
 
   @Override
   public String getVersion() {
-    return "0.1.6"; // x-release-please-version
+    return "0.2.0"; // x-release-please-version
   }
 
   @Override
