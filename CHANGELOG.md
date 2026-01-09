@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.3.0...v0.3.1) (2026-01-09)
+
+
+### Miscellaneous Chores
+
+* bump version ([744ad29](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/744ad299e5a92131b54ad858a0d694aa222a51a7))
+
 ## [0.3.0](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.2.0...v0.3.0) (2026-01-02)
 
 
