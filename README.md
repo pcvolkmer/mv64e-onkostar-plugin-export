@@ -10,6 +10,8 @@ Hierzu verwendet das Plugin das Projekt https://github.com/pcvolkmer/mv64e-onkos
 Version >= 0.2.0 ist für die Verwendung mit DNPM:DIP (api-gateway) Version >= 1.2.3 bestimmt und verwendet Anpassungen
 im Geburts- und Sterbedatum im Format 'yyyy-MM' (ohne Tag).
 
+Es ist Onkostar in Version 2.14.0 oder neuer erforderlich, um das Plugin nutzen zu können.
+
 ## Einstellungen
 
 Zum Betrieb dieses Plugins ist die Angabe der URL der Zielanwendung erforderlich.
