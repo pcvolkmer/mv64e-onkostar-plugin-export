@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.0](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.3.3...v0.4.0) (2026-02-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* update extraction lib to version 0.5.0
+
+### deps
+
+* update extraction lib to version 0.5.0 ([b86e4c6](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/b86e4c68a057caf42ee80f73e9273f7b7163849c))
+
 ## [0.3.3](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.3.2...v0.3.3) (2026-01-28)
 
 
