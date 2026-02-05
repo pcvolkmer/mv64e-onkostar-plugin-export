@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.pcvolkmer.onco'
-version = '0.4.0' // x-release-please-version
+version = '0.4.1' // x-release-please-version
 description = 'OS Export-Plugin für das DNPM-Datenmodell 2.1'
 
 java.sourceCompatibility = JavaVersion.VERSION_11
