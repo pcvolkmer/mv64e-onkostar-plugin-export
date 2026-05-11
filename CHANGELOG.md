@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.7.0](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.6.0...v0.7.0) (2026-05-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* export on DNPM FollowUp form lock ([#34](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/issues/34))
+
+### deps
+
+* update extraction lib to version 0.7.2 ([8c416ea](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/8c416ea46090189e294dac7df4a128bea40393ae))
+
+
+### Features
+
+* export on DNPM FollowUp form lock ([#34](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/issues/34)) ([da0e1df](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/da0e1df8e10c14f0a66e225633c9508790810d10))
+
+
+### Miscellaneous Chores
+
+* release 0.7.0 ([68b2810](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/68b28100fcc8ffb6c013ca98c6fc75e9fbbd3bac))
+
 ## [0.6.0](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.5.0...v0.6.0) (2026-05-08)
 
 
