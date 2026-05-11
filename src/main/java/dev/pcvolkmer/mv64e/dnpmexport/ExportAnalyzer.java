@@ -93,28 +93,52 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
 
   @Override
   public void analyze(final Procedure procedure, final Disease disease) {
-    logger.info("Starting export for procedure {}", procedure.getId());
+    if (null == procedure) {
+      logger.info("No procedure to export");
+      return;
+    }
+    logger.info(
+        "Export triggered by locking procedure form '{}' with id '{}'",
+        procedure.getFormName(),
+        procedure.getId());
+    handleProcedureExport(procedure);
+  }
 
+  private void handleProcedureExport(Procedure procedure) {
     try {
       String caseId;
       switch (procedure.getFormName()) {
         case "DNPM Klinik/Anamnese":
           caseId = procedure.getValue("FallnummerMV").getString();
+          logger.info("Starting export for case '{}'", caseId);
           break;
         case "DNPM Therapieplan":
           var kpaProcedure =
               onkostarApi.getProcedure(procedure.getValue("refdnpmklinikanamnese").getInt());
-          caseId = kpaProcedure.getValue("FallnummerMV").getString();
-          break;
+          handleProcedureExport(kpaProcedure);
+          return;
+        case "DNPM FollowUp":
+          var einzelempfehlung =
+              onkostarApi.getProcedure(procedure.getValue("LinkTherapieempfehlung").getInt());
+          var therapieplan = onkostarApi.getProcedure(einzelempfehlung.getParentProcedureId());
+          handleProcedureExport(therapieplan);
+          return;
         default:
-          logger.info("Cannot handle procedure form {}", procedure.getFormName());
+          logger.info(
+              "Cannot handle procedure form '{}' with id '{}'",
+              procedure.getFormName(),
+              procedure.getId());
           return;
       }
 
       var mtb = mtbDataMapper.getByCaseId(caseId);
       sendMtbFileRequest(mtb);
     } catch (Exception e) {
-      logger.error("Cannot export mtb data for procedure {}", procedure.getId(), e);
+      logger.error(
+          "Cannot export mtb data using procedure form '{}' with id '{}'",
+          procedure.getFormName(),
+          procedure.getId(),
+          e);
     }
   }
 

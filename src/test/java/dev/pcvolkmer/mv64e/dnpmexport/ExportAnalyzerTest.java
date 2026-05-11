@@ -17,10 +17,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class ExportAnalyzerTest {
 
   private IOnkostarApi onkostarApi;
@@ -104,6 +107,58 @@ class ExportAnalyzerTest {
     var kpaIdCaptor = ArgumentCaptor.forClass(Integer.class);
     verify(onkostarApi, times(1)).getProcedure(kpaIdCaptor.capture());
     assertThat(kpaIdCaptor.getValue()).isEqualTo(1);
+
+    var caseIdCaptor = ArgumentCaptor.forClass(String.class);
+    verify(mtbDataMapper, times(1)).getByCaseId(caseIdCaptor.capture());
+    assertThat(caseIdCaptor.getValue()).isEqualTo("1600012345");
+  }
+
+  @Test
+  void shouldExtractMtbDataForFollowUp() {
+    var kpa = new Procedure(onkostarApi);
+    kpa.setId(1);
+    kpa.setFormName("DNPM Klinik/Anamnese");
+    kpa.setValue("FallnummerMV", new Item("FallnummerMV", "1600012345"));
+
+    var therapieplan = new Procedure(onkostarApi);
+    therapieplan.setId(2);
+    therapieplan.setFormName("DNPM Therapieplan");
+    therapieplan.setValue("refdnpmklinikanamnese", new Item("ref_dnpm_klinikanamnese", 1));
+
+    var einzelempfehlung = new Procedure(onkostarApi);
+    einzelempfehlung.setId(3);
+    einzelempfehlung.setFormName("DNPM UF Einzelempfehlung");
+    einzelempfehlung.setParentProcedureId(2);
+
+    var followUp = new Procedure(onkostarApi);
+    followUp.setId(4);
+    followUp.setFormName("DNPM FollowUp");
+    followUp.setValue("LinkTherapieempfehlung", new Item("LinkTherapieempfehlung", 3));
+
+    doAnswer(
+            invocationOnMock -> {
+              var procedureId = invocationOnMock.getArgument(0, Integer.class);
+              switch (procedureId) {
+                case 1:
+                  return kpa;
+                case 2:
+                  return therapieplan;
+                case 3:
+                  return einzelempfehlung;
+                case 4:
+                  return followUp;
+                default:
+                  return null;
+              }
+            })
+        .when(this.onkostarApi)
+        .getProcedure(anyInt());
+
+    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(Mtb.builder().build());
+    when(this.restTemplate.postForEntity(any(URI.class), any(), any()))
+        .thenReturn(ResponseEntity.accepted().build());
+
+    this.analyzer.analyze(followUp, null);
 
     var caseIdCaptor = ArgumentCaptor.forClass(String.class);
     verify(mtbDataMapper, times(1)).getByCaseId(caseIdCaptor.capture());
