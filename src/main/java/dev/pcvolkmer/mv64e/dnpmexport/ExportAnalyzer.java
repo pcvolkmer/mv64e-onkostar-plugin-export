@@ -144,8 +144,7 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
 
   @Override
   public Set<AnalyseTriggerEvent> getTriggerEvents() {
-    return Set.of(
-        AnalyseTriggerEvent.LOCK, AnalyseTriggerEvent.EDIT_LOCK, AnalyseTriggerEvent.REORG);
+    return Set.of(AnalyseTriggerEvent.LOCK, AnalyseTriggerEvent.REORG);
   }
 
   private void sendMtbFileRequest(Mtb mtb) {
