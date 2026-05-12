@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.7.0...v0.7.1) (2026-05-12)
+
+
+### Bug Fixes
+
+* do not use EDIT_LOCK as trigger event to export data ([#37](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/issues/37)) ([0642936](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/0642936abb7c03e4c1370b1d68491216ce17f184))
+
 ## [0.7.0](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.6.0...v0.7.0) (2026-05-11)
 
 
