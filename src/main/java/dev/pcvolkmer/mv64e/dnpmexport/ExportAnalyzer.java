@@ -13,6 +13,7 @@ import dev.pcvolkmer.mv64e.mtb.Converter;
 import dev.pcvolkmer.mv64e.mtb.Mtb;
 import java.net.URI;
 import java.util.Base64;
+import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,7 +89,8 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
   public boolean isRelevantForAnalyzer(final Procedure procedure, final Disease disease) {
     return null != procedure
         && ("DNPM Klinik/Anamnese".equals(procedure.getFormName())
-            || "DNPM Therapieplan".equals(procedure.getFormName()));
+            || "DNPM Therapieplan".equals(procedure.getFormName())
+            || "DNPM FollowUp".equals(procedure.getFormName()));
   }
 
   @Override
@@ -102,6 +104,28 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
         procedure.getFormName(),
         procedure.getId());
     handleProcedureExport(procedure);
+  }
+
+  public ExportResult exportForMvh(final Map<String, Object> params) {
+    try {
+      if (null == params || !params.containsKey("procedureId")) {
+        return new ExportResult(false, "Kein Formular angegeben!");
+      }
+
+      final var procedure =
+          onkostarApi.getProcedure(Integer.parseInt(params.get("procedureId").toString()));
+      if (null == procedure) {
+        return new ExportResult(
+            false, "Dieses Formular kann nicht für den Export verwendet werden!");
+      }
+
+      handleProcedureExport(procedure);
+
+      return new ExportResult(
+          true, String.format("Export für Formular '%s' durchgeführt.", procedure.getFormName()));
+    } catch (Exception e) {
+      return new ExportResult(false, e.getMessage());
+    }
   }
 
   private void handleProcedureExport(Procedure procedure) {
@@ -128,17 +152,22 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
               "Cannot handle procedure form '{}' with id '{}'",
               procedure.getFormName(),
               procedure.getId());
-          return;
+          throw new MvhExportException(
+              String.format(
+                  "Kann Daten nicht aus Formular '%s' exportieren", procedure.getFormName()));
       }
 
       var mtb = mtbDataMapper.getByCaseId(caseId);
       sendMtbFileRequest(mtb);
+    } catch (MvhExportException e) {
+      throw e;
     } catch (Exception e) {
       logger.error(
           "Cannot export mtb data using procedure form '{}' with id '{}'",
           procedure.getFormName(),
           procedure.getId(),
           e);
+      throw new MvhExportException("Es ist ein Fehler aufgetreten, kann Daten nicht exportieren");
     }
   }
 
@@ -173,21 +202,21 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
       var r = restTemplate.postForEntity(uri, entityReq, String.class);
       if (!r.getStatusCode().is2xxSuccessful()) {
         logger.error("Error sending to remote system: {}", r.getBody());
-        throw new RuntimeException("Kann Daten nicht an das externe System senden");
+        throw new MvhExportException("Kann Daten nicht an das externe System senden");
       }
     } catch (IllegalArgumentException e) {
       logger.error("Not a valid URI to export to: '{}'", exportUrl);
-      throw new RuntimeException("Keine gültige Adresse für das externe System");
+      throw new MvhExportException("Keine gültige Adresse für das externe System");
     } catch (JsonProcessingException e) {
       logger.error("Cannot send data to remote system", e);
-      throw new RuntimeException("Kann Daten nicht in JSON-String wandeln");
+      throw new MvhExportException("Kann Daten nicht in JSON-String wandeln");
     } catch (HttpClientErrorException e) {
       logger.error("Cannot send data to remote system", e);
       logger.error("Response: {}", e.getResponseBodyAsString());
-      throw new RuntimeException("Kann Daten nicht an das externe System senden");
+      throw new MvhExportException("Kann Daten nicht an das externe System senden");
     } catch (RestClientException e) {
       logger.error("Cannot send data to remote system", e);
-      throw new RuntimeException("Kann Daten nicht an das externe System senden");
+      throw new MvhExportException("Kann Daten nicht an das externe System senden");
     }
   }
 }
