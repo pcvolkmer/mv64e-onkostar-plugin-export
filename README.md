@@ -46,11 +46,13 @@ die weitere ETL-Strecke.
 
 ## Ablauf des Exports
 
+### Abschließen eines DNPM-Formulars
+
 Beim Abschließen eines DNPM-Formulars wird für die Formulare (und damit auch Unterformulare)
 
 * DNPM Klinik/Anamnese
 * DNPM Therapieplan
-* DNPM FollowUp *(aktuell nicht nicht umgesetzt)*
+* DNPM FollowUp
 
 der Inhalt aller zugehörigen DNPM-Formulare für den Patienten und die Erkrankung, für den/die ein DNPM-Formular
 abgeschlossen wurde, ermittelt und zusammengetragen.
@@ -66,6 +68,25 @@ und in Folge die zugehörigen Formulare ermittelt:
 
 Die Übermittlung erfolgt ohne weiteres Zutun von Seiten des Anwenders und wird bereits durch das Abschließen eines
 DNPM-Formulars ausgelöst.
+
+### Aufruf einer Backend-Methode
+
+Mit der Backend-Methode `exportForMvh()` kann ebenfalls ein Export unter Angabe einer Formular-ID durchgeführt werden.
+
+```javascript
+executePluginMethod(
+  'ExportAnalyzer',
+  'exportForMvh',
+  { procedureId: getProcedureId() },
+  function (res) {
+    if (res.status.result && res.result.success) {
+      Ext.Msg.alert('Erfolgreich!', res.result.message);
+    } else {
+      Ext.Msg.alert('Fehler!', res.result.message);
+    }
+  }
+);
+```
 
 ## Build
 
