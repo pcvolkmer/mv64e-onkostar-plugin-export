@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.3](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.8.2...v0.8.3) (2026-05-26)
+
+
+### Miscellaneous Chores
+
+* release 0.8.3 ([c5bc6ae](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/c5bc6ae52ef7132358614e4a65c7660a09b071ce))
+
 ## [0.8.2](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.8.1...v0.8.2) (2026-05-26)
 
 
