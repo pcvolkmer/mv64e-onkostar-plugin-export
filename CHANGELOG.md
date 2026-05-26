@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.8.0](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.7.1...v0.8.0) (2026-05-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* add MVH export using backend method ([#40](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/issues/40))
+
+### Features
+
+* add MVH export using backend method ([#40](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/issues/40)) ([c79a143](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/c79a143b484f541f6946643a533a8112432a7ffd))
+
+
+### Miscellaneous Chores
+
+* release 0.8.0 ([232ed9e](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/232ed9e439d85f6f31a7407a88afa1a4d6620f0a))
+
 ## [0.7.1](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.7.0...v0.7.1) (2026-05-12)
 
 
