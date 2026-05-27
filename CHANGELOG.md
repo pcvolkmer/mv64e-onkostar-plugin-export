@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.5](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.8.4...v0.8.5) (2026-05-27)
+
+
+### deps
+
+* update extraction lib to version 0.8.6 ([d803f2d](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/d803f2dd336e735edec6e04aad960e5d1e91f8aa))
+
 ## [0.8.4](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.8.3...v0.8.4) (2026-05-27)
 
 
