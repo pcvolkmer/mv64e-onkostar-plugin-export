@@ -11,6 +11,7 @@ import de.itc.onkostar.api.analysis.OnkostarPluginType;
 import dev.pcvolkmer.mv64e.datamapper.mapper.MtbDataMapper;
 import dev.pcvolkmer.mv64e.mtb.Converter;
 import dev.pcvolkmer.mv64e.mtb.Mtb;
+import dev.pcvolkmer.mv64e.mtb.MvhSubmissionType;
 import java.net.URI;
 import java.util.Base64;
 import java.util.Map;
@@ -129,6 +130,10 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
   }
 
   private void handleProcedureExport(Procedure procedure) {
+    handleProcedureExport(procedure, false);
+  }
+
+  private void handleProcedureExport(Procedure procedure, boolean isFollowUp) {
     try {
       String caseId;
       switch (procedure.getFormName()) {
@@ -139,13 +144,13 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
         case "DNPM Therapieplan":
           var kpaProcedure =
               onkostarApi.getProcedure(procedure.getValue("refdnpmklinikanamnese").getInt());
-          handleProcedureExport(kpaProcedure);
+          handleProcedureExport(kpaProcedure, isFollowUp);
           return;
         case "DNPM FollowUp":
           var einzelempfehlung =
               onkostarApi.getProcedure(procedure.getValue("LinkTherapieempfehlung").getInt());
           var therapieplan = onkostarApi.getProcedure(einzelempfehlung.getParentProcedureId());
-          handleProcedureExport(therapieplan);
+          handleProcedureExport(therapieplan, true);
           return;
         default:
           logger.info(
@@ -158,6 +163,9 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
       }
 
       var mtb = mtbDataMapper.getByCaseId(caseId);
+      if (isFollowUp && mtb.getMetadata() != null) {
+        mtb.getMetadata().setType(MvhSubmissionType.FOLLOWUP);
+      }
       sendMtbFileRequest(mtb);
     } catch (MvhExportException e) {
       throw e;
