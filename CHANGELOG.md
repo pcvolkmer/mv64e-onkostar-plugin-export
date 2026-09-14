@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.9.2...v0.10.0) (2026-09-14)
+
+
+### deps
+
+* update extraction lib to version 0.10.0 ([4c9aa80](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/4c9aa803c8c5d9ecc250d82ea44a04eaf46389ca))
+
+
+### Bug Fixes
+
+* set MvhSubmissionType to FOLLOWUP for follow-up triggered exports ([f9e0887](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/f9e08873565a25af6092ae114c2410d6ea966537))
+
 ## [0.9.2](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.9.1...v0.9.2) (2026-08-19)
 
 
