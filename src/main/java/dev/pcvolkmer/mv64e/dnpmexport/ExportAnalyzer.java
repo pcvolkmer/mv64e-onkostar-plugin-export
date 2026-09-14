@@ -9,9 +9,9 @@ import de.itc.onkostar.api.analysis.AnalyzerRequirement;
 import de.itc.onkostar.api.analysis.IProcedureAnalyzer;
 import de.itc.onkostar.api.analysis.OnkostarPluginType;
 import dev.pcvolkmer.mv64e.datamapper.mapper.MtbDataMapper;
-import dev.pcvolkmer.mv64e.mtb.Converter;
-import dev.pcvolkmer.mv64e.mtb.Mtb;
-import dev.pcvolkmer.mv64e.mtb.MvhSubmissionType;
+import dev.pcvolkmer.mv64e.model.Converter;
+import dev.pcvolkmer.mv64e.model.MvhSubmissionType;
+import dev.pcvolkmer.mv64e.model.PatientRecord;
 import java.net.URI;
 import java.util.Base64;
 import java.util.Map;
@@ -184,7 +184,7 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
     return Set.of(AnalyseTriggerEvent.LOCK, AnalyseTriggerEvent.REORG);
   }
 
-  private void sendMtbFileRequest(Mtb mtb) {
+  private void sendMtbFileRequest(PatientRecord mtb) {
     var exportUrl = onkostarApi.getGlobalSetting("dnpmexport_url");
 
     try {

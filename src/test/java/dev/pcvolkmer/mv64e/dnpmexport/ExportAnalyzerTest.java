@@ -9,7 +9,7 @@ import de.itc.onkostar.api.IOnkostarApi;
 import de.itc.onkostar.api.Item;
 import de.itc.onkostar.api.Procedure;
 import dev.pcvolkmer.mv64e.datamapper.mapper.MtbDataMapper;
-import dev.pcvolkmer.mv64e.mtb.Mtb;
+import dev.pcvolkmer.mv64e.model.PatientRecord;
 import java.net.URI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ class ExportAnalyzerTest {
 
   @Test
   void shouldExtractMtbDataForKlinikAnamnese() {
-    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(Mtb.builder().build());
+    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(PatientRecord.builder().build());
     when(this.restTemplate.postForEntity(any(URI.class), any(), any()))
         .thenReturn(ResponseEntity.accepted().build());
 
@@ -93,7 +93,7 @@ class ExportAnalyzerTest {
         .when(this.onkostarApi)
         .getProcedure(anyInt());
 
-    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(Mtb.builder().build());
+    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(PatientRecord.builder().build());
     when(this.restTemplate.postForEntity(any(URI.class), any(), any()))
         .thenReturn(ResponseEntity.accepted().build());
 
@@ -154,7 +154,7 @@ class ExportAnalyzerTest {
         .when(this.onkostarApi)
         .getProcedure(anyInt());
 
-    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(Mtb.builder().build());
+    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(PatientRecord.builder().build());
     when(this.restTemplate.postForEntity(any(URI.class), any(), any()))
         .thenReturn(ResponseEntity.accepted().build());
 
@@ -167,7 +167,7 @@ class ExportAnalyzerTest {
 
   @Test
   void shouldSendHttpRequestWithMtbData() {
-    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(Mtb.builder().build());
+    when(mtbDataMapper.getByCaseId(anyString())).thenReturn(PatientRecord.builder().build());
     when(this.restTemplate.postForEntity(any(URI.class), any(), any()))
         .thenReturn(ResponseEntity.accepted().build());
 
