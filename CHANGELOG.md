@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.10.0...v0.10.1) (2026-09-21)
+
+
+### Bug Fixes
+
+* include missing model ([8756fbf](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/commit/8756fbf09d9f9a8e15b1e25a476bacaa927a11c5))
+
 ## [0.10.0](https://github.com/pcvolkmer/mv64e-onkostar-plugin-export/compare/v0.9.2...v0.10.0) (2026-09-14)
 
 
