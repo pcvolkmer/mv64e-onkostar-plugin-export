@@ -1,4 +1,4 @@
-# Onkostar Plugin "mv64e-onkostar-plugin-export"
+# Onkostar-Plugin für den Export von Datensätzen in eine ETL-Strecke für das Modellvorhaben Genomsequenzierung gem. §64e SGB V
 
 Aufgabe dieses Plugins ist es, die Inhalte der DNPM-Formulare in die Datenstruktur des DNPM-Datenmodells 2.1 zu wandeln
 und anhand festgelegter Regeln die Notwendigkeit zum Export zu prüfen und diesen durchzuführen.
@@ -75,16 +75,16 @@ Mit der Backend-Methode `exportForMvh()` kann ebenfalls ein Export unter Angabe 
 
 ```javascript
 executePluginMethod(
-  'ExportAnalyzer',
-  'exportForMvh',
-  { procedureId: getProcedureId() },
-  function (res) {
-    if (res.status.result && res.result.success) {
-      Ext.Msg.alert('Erfolgreich!', res.result.message);
-    } else {
-      Ext.Msg.alert('Fehler!', res.result.message);
+    'ExportAnalyzer',
+    'exportForMvh',
+    {procedureId: getProcedureId()},
+    function (res) {
+        if (res.status.result && res.result.success) {
+            Ext.Msg.alert('Erfolgreich!', res.result.message);
+        } else {
+            Ext.Msg.alert('Fehler!', res.result.message);
+        }
     }
-  }
 );
 ```
 
