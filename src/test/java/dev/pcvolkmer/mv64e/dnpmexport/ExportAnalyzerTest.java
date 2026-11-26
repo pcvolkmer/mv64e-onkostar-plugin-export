@@ -1,6 +1,7 @@
 package dev.pcvolkmer.mv64e.dnpmexport;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -163,6 +164,66 @@ class ExportAnalyzerTest {
     var caseIdCaptor = ArgumentCaptor.forClass(String.class);
     verify(mtbDataMapper, times(1)).getByCaseId(caseIdCaptor.capture());
     assertThat(caseIdCaptor.getValue()).isEqualTo("1600012345");
+  }
+
+  @Test
+  void shouldFailWhenFollowUpRecommendationCannotBeResolved() {
+    var followUp = new Procedure(onkostarApi);
+    followUp.setId(4);
+    followUp.setFormName("DNPM FollowUp");
+    followUp.setValue("LinkTherapieempfehlung", new Item("LinkTherapieempfehlung", 3));
+
+    var exception =
+        assertThrows(MvhExportException.class, () -> this.analyzer.analyze(followUp, null));
+
+    assertThat(exception.getMessage())
+        .isEqualTo("Es ist ein Fehler aufgetreten, kann Daten nicht exportieren");
+    verify(onkostarApi).getProcedure(3);
+    verifyNoInteractions(mtbDataMapper, restTemplate);
+  }
+
+  @Test
+  void shouldFailWhenFollowUpRecommendationReferenceIsMissing() {
+    var followUp = new Procedure(onkostarApi);
+    followUp.setId(4);
+    followUp.setFormName("DNPM FollowUp");
+
+    var exception =
+        assertThrows(MvhExportException.class, () -> this.analyzer.analyze(followUp, null));
+
+    assertThat(exception.getMessage())
+        .isEqualTo("Es ist ein Fehler aufgetreten, kann Daten nicht exportieren");
+    verify(onkostarApi, never()).getProcedure(anyInt());
+    verifyNoInteractions(mtbDataMapper, restTemplate);
+  }
+
+  @Test
+  void shouldFailWhenFollowUpKpaCannotBeResolved() {
+    var therapieplan = new Procedure(onkostarApi);
+    therapieplan.setId(2);
+    therapieplan.setFormName("DNPM Therapieplan");
+    therapieplan.setValue("refdnpmklinikanamnese", new Item("ref_dnpm_klinikanamnese", 1));
+
+    var einzelempfehlung = new Procedure(onkostarApi);
+    einzelempfehlung.setId(3);
+    einzelempfehlung.setFormName("DNPM UF Einzelempfehlung");
+    einzelempfehlung.setParentProcedureId(2);
+
+    var followUp = new Procedure(onkostarApi);
+    followUp.setId(4);
+    followUp.setFormName("DNPM FollowUp");
+    followUp.setValue("LinkTherapieempfehlung", new Item("LinkTherapieempfehlung", 3));
+
+    when(onkostarApi.getProcedure(3)).thenReturn(einzelempfehlung);
+    when(onkostarApi.getProcedure(2)).thenReturn(therapieplan);
+
+    var exception =
+        assertThrows(MvhExportException.class, () -> this.analyzer.analyze(followUp, null));
+
+    assertThat(exception.getMessage())
+        .isEqualTo("Es ist ein Fehler aufgetreten, kann Daten nicht exportieren");
+    verify(onkostarApi).getProcedure(1);
+    verifyNoInteractions(mtbDataMapper, restTemplate);
   }
 
   @Test

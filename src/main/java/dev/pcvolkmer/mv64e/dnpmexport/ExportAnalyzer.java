@@ -143,13 +143,17 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
           break;
         case "DNPM Therapieplan":
           var kpaProcedure =
-              onkostarApi.getProcedure(procedure.getValue("refdnpmklinikanamnese").getInt());
+              getReferencedProcedure(procedure, "refdnpmklinikanamnese", "Klinik/Anamnese");
           handleProcedureExport(kpaProcedure, isFollowUp);
           return;
         case "DNPM FollowUp":
           var einzelempfehlung =
-              onkostarApi.getProcedure(procedure.getValue("LinkTherapieempfehlung").getInt());
-          var therapieplan = onkostarApi.getProcedure(einzelempfehlung.getParentProcedureId());
+              getReferencedProcedure(procedure, "LinkTherapieempfehlung", "therapy recommendation");
+          var therapieplan =
+              getRequiredProcedure(
+                  einzelempfehlung.getParentProcedureId(),
+                  String.format(
+                      "therapy-plan parent of recommendation '%s'", einzelempfehlung.getId()));
           handleProcedureExport(therapieplan, true);
           return;
         default:
@@ -170,13 +174,40 @@ public class ExportAnalyzer implements IProcedureAnalyzer {
     } catch (MvhExportException e) {
       throw e;
     } catch (Exception e) {
+      var formName = procedure == null ? "<missing procedure>" : procedure.getFormName();
+      var procedureId = procedure == null ? "<unknown>" : String.valueOf(procedure.getId());
       logger.error(
           "Cannot export mtb data using procedure form '{}' with id '{}'",
-          procedure.getFormName(),
-          procedure.getId(),
+          formName,
+          procedureId,
           e);
       throw new MvhExportException("Es ist ein Fehler aufgetreten, kann Daten nicht exportieren");
     }
+  }
+
+  private Procedure getReferencedProcedure(
+      Procedure procedure, String referenceName, String referencedProcedureDescription) {
+    var reference = procedure.getValue(referenceName);
+    if (reference == null) {
+      throw new IllegalStateException(
+          String.format(
+              "Procedure form '%s' with id '%s' has no '%s' reference",
+              procedure.getFormName(), procedure.getId(), referenceName));
+    }
+
+    return getRequiredProcedure(
+        reference.getInt(),
+        String.format("%s referenced by '%s'", referencedProcedureDescription, referenceName));
+  }
+
+  private Procedure getRequiredProcedure(int procedureId, String procedureDescription) {
+    var procedure = onkostarApi.getProcedure(procedureId);
+    if (procedure == null) {
+      throw new IllegalStateException(
+          String.format("Cannot resolve %s procedure '%s'", procedureDescription, procedureId));
+    }
+
+    return procedure;
   }
 
   @Override
